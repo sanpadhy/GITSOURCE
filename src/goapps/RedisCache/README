@@ -1,0 +1,9 @@
+Pull the docker image for Redis distributed cache. 
+Run the Redis instance in Docker container. 
+
+$ docker pull redis
+$ docker run --name redis-test-instance -p 6379:6379 -d redis
+
+Map the local port 6379 to the port that redis is running against within the container using the -p flag.
+
+

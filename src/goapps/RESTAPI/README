@@ -1,0 +1,20 @@
+create REST endpoints within your project that can handle POST, GET, PUT and DELETE HTTP requests.
+
+Building REST APIs allow you to easily decouple both consumers and producers and are typically stateless by design.
+
+ A homePage function that will handle all requests to our root URL, a handleRequests function that will match the URL path hit with a defined function and a main function which will kick off our API.
+
+The call to json.NewEncoder(w).Encode(article) does the job of encoding our articles array into a JSON string and then writing as part of our response.
+
+gorilla/mux Vs net/http router: 
+Easily perform tasks such as parsing any path or query parameters that may reside within an incoming HTTP request. 
+
+Our HTTP router is based on Gorilla mux router. It helps to retrieve path and query parameters easily. 
+With the gorilla mux router we can add variables to our paths and then pick and choose what articles we want to return based on these variables. Create a new route within your handleRequests() function just below our /articles route. 
+
+
+ 
+
+
+
+

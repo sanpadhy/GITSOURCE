@@ -1,0 +1,13 @@
+##################  REFLECTOR   ############################
+
+With reflect package we were able to extract basic information about our User struct, its type and kind and also list of all of its fields.
+
+field.Tag.Get method will return a string that matches the tag name
+
+In This example struct tags are used to perform the validation. few validator types (numeric, string, email) using interface pattern.
+
+reflect.ValueOf we can grab the field value using v.Field(i).Interface() which gives us an interface that we can pass for validation. 
+
+get type of the field using v.Type().Field(i).
+
+

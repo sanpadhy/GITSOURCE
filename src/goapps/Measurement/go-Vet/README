@@ -1,0 +1,95 @@
+
+############### GO-VET Command #########################
+
+Go Vert command detect any suspicious, abnormal, or useless code in your application. 
+
+It has built-in analyzer. 
+1) Atomic analyzer 
+
+func main() {
+   var a int32 = 0
+
+   var wg sync.WaitGroup
+   for i := 0; i < 500; i++ {
+      wg.Add(1)
+      go func() {
+         a = atomic.AddInt32(&a, 1)
+         wg.Done()
+      }()
+   }
+   wg.Wait()
+}main.go:15:4: direct assignment to atomic value
+
+2)
+Copylocks 
+
+func main() {
+   var lock sync.Mutex
+
+   l := lock
+   l.Lock()
+   l.Unlock()
+}from vet: main.go:9:7: assignment copies lock value to l: sync.Mutex
+
+
+3) 
+Loopclosure 
+
+func main() {
+   var wg sync.WaitGroup
+   for _, v := range []int{0,1,2,3} {
+      wg.Add(1)
+      go func() {
+         print(v)
+         wg.Done()
+      }()
+   }
+   wg.Wait()
+}3333
+from vet: main.go:10:12: loop variable v captured by func literal
+ 
+4) 
+lostcancel 
+
+Creating a cancellable context from the main one will return the new context along with a function able to cancel this context. 
+
+func Foo(ctx context.Context) {}
+
+func main() {
+   ctx, _ := context.WithCancel(context.Background())
+   Foo(ctx)
+}from vet: main.go:8:7: the cancel function returned by context.WithCancel should be called, not discarded, to avoid a context leak
+
+5. 
+Stdmethods 
+
+The stdmethods analyzer will make sure the methods you have implemented from the interfaces of the standard library are well compatible with what is expected
+
+type Foo struct {}
+
+func (f Foo) MarshalJSON() (string, error) {
+   return `{a: 0}`, nil
+}
+
+func main() {
+   f := Foo{}
+   j, _ := json.Marshal(f)
+   println(string(j))
+}{}
+from vet: main.go:7:14: method MarshalJSON() (string, error) should have signature MarshalJSON() ([]byte, error)
+
+6. 
+structtag
+
+Tags are strings in struct that should follow the convention defined in the reflect package. An extra space would make a tag not valid and could be hard to debug without vet command:
+
+type Foo struct {
+   A int `json: "foo"`
+}
+
+func main() {
+   f := Foo{}
+   j, _ := json.Marshal(f)
+   println(string(j))
+}{"A":0}
+from vet: main.go:6:2: struct field tag `json: "foo"` not compatible with reflect.StructTag.Get: bad syntax for struct tag value

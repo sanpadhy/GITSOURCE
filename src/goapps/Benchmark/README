@@ -1,0 +1,7 @@
+Testing and benchmarks are integrated very tightly with the Go tooling, and writing a benchmark is as simple as writing a function with a name starting with Benchmark and the appropriate signature.
+
+Parameter --> testing.B 
+
+it defines the number of times we should perform the operation we’re benchmarking.
+
+By default benchmarks are given a number of iterations that will make the function run for a whole second. 

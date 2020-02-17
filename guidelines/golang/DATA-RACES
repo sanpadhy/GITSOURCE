@@ -1,0 +1,145 @@
+
+#################  DATA RACES ##########################
+
+what is race conditions? 
+
+Performing a single task in multiple lines in which the execution of task may impact by other threads running in 
+same context. 
+
+For exa: 
+x := counter 
+x++ 
+counter = x
+
+why not do the same thing with counter++. It's a bad programming practice. 
+
+################
+
+Dataraces can result in many ways. In this file I have all data race conditions. 
+Good thing about go is that It can detect the race conditions. 
+
+$ go run -race main.go
+
+
+
+
+
+1. 
+
+func main() {
+	a := asChan(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+	b := asChan(10, 11, 12, 13, 14, 15, 16, 17, 18, 19)
+	c := asChan(20, 21, 22, 23, 24, 25, 26, 27, 28, 29)
+	for v := range merge(a, b, c) {
+		fmt.Println(v)
+	}
+} 
+
+func merge(cs ...<-chan int) <-chan int {
+    out := make(chan int)
+    
+    for _, c := range cs {
+        go func() {
+            for v := range c {
+                out <- v
+            }
+        }()
+    }
+    return out
+}
+
+we’re accessing the c variable defined in the for loop from many goroutines. Which is dangerous. 
+We can solve the datarace with passing the value to c through channel. 
+ 
+func merge(cs ...<-chan int) <-chan int {
+    out := make(chan int)
+    
+    for _, c := range cs {
+        go func(c <-chan int) {    <<<<   
+            for v := range c {
+                out <- v
+            }
+        }(c)		      <<<     
+    }
+    return out
+}
+
+But the main goroutine is blocked waiting for anyone to close the channel on which it’s ranging. Unfortunately we forgot to close the channel at all.
+It crashes. 
+
+But when to close? We don't know when all goroutines have finished sending values into it. It can be done in two ways 
+
+1.1 using waitgroup
+
+func merge(cs ...<-chan int) <-chan int {
+	out := make(chan int)
+	var wg sync.WaitGroup
+	wg.Add(len(cs))
+	for _, c := range cs {
+		go func(c <-chan int) {
+			for v := range c {
+				out <- v
+			}
+			wg.Done()
+		}(c)
+	}
+	go func() {
+		wg.Wait()
+		close(out)
+	}()
+	return out
+}
+
+
+1.2 Reflect package  
+
+create a slice of SelectCase that contains an element per channel.
+
+ var cases []reflect.SelectCase
+    for _, c := range chans {
+        cases = append(cases, reflect.SelectCase{
+            Dir:  reflect.SelectRecv,
+            Chan: reflect.ValueOf(c),
+        })
+    }
+
+call reflect.Select and send the value we receive to the out channel. Unless channel we received from was closed, in which case we should remove the case from the slice. This is very similar to what we did setting the channel to nil in the previous episode.
+
+ i, v, ok := reflect.Select(cases)
+    if !ok {
+        cases = append(cases[:i], cases[i+1:]...)
+        continue
+    }
+    out <- v.Interface().(int)
+
+done till slice not being empty. 
+
+
+Example 2 
+-------------------------------
+
+In another example you have two threads. 
+
+func main() {
+
+	go function("Hello")
+	go function("World")
+}
+
+func function(s string) {
+	var mutex sync.mutex
+
+	if s {
+		/// perform some action on shared var
+	}
+}
+
+In the above example you created separate mutex for separate threads. Both the mutex are independent of each other. 
+Both will access the counter with separate mutex, results in race conditions. 
+
+Have a single global mutex for common counter. 
+
+
+
+
+

@@ -1,0 +1,20 @@
+
+#######################  LINKER . To Build the clean clode .. #########################
+
+Use the Dependency Injection and Inversion of Control for building well-formed project architecture.
+
+    components registry
+    dependency injection
+    circular dependency detection
+    post-construction (injection) initialization
+    automatic prioritization for components initialization
+    automatic prioritization for components shutdown
+
+In Linker Dependency Injection is a process of assigning fields of a registered components by values of other registered components. For understanding, which fields of components should be injected, Linker expects the fields be annotated special way.
+
+The “Post Construction” is a procedure by notifying some of registered components when all components dependencies have been resolved successfully. 
+
+Refer the following code. 
+https://github.com/logrange/logrange 
+
+

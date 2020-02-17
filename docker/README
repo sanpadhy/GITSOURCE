@@ -1,0 +1,98 @@
+Docker image to build:  
+
+            sudo docker build -t dns_image .
+
+Running Docker Image:
+        ex:
+                sudo docker run -d -p 3000:3000 --name drone dns_image:latest
+
+run --> container image to run. 
+
+You can also create the docker container with following command: 
+	
+	sudo docker container -d --name webserver -P 80:80 nginx
+
+-d --> (detached) to run in the background.   
+
+-p 80:80 --> Default listens on tcp port 80 and local host port 80. 
+
+Docker image need 
+1) To Create virtual network: 
+	docker network create test 
+   Attach the container to network 
+	docker container run -d --network=test --name=web nginx   
+
+2)  Generally docker containers are aphemeral or stateless. Means it's state never saved. To 
+maintain the statefulless, create a volume and attach the container to that volume. 
+
+   	docker volume create test 
+  
+    	docker container run --rm -v test:/myvolume debian: Jessie/bin/bash
+
+In dockerfile, need to have COPY -- copies the file from host's local file system into container image. 
+
+DOCKERFILE 
+--------------------------
+
+1.
+Multi-stage builds allow you to drastically reduce the size of your final image, without struggling to reduce the number of intermediate layers and files.
+
+
+
+2.  
+FROM ubuntu:18.04
+COPY . /app
+RUN make /app
+CMD python /app/app.py
+ENV PATH /usr/local/postgres-$PG_MAJOR/bin:$PATH
+
+Each instruction creates one layer:
+
+    FROM creates a layer from the ubuntu:18.04 Docker image.
+	Note: We recommend the Alpine image as it is tightly controlled and small in size (currently under 5 MB)
+
+    COPY adds files from your Docker client’s current directory.
+	
+    RUN builds your application with make.
+	Note: Avoid RUN apt-get upgrade and dist-upgrade. Always combine RUN apt-get update with apt-get install in the same RUN statement. 
+	RUN apt-get update && apt-get install -y \
+    		package-bar \
+    		package-baz \
+    		package-foo	
+
+    CMD specifies what command to run within the container.
+	Note: CMD should be given an interactive shell, such as bash, python and perl. 
+
+    EXPOSE instruction indicates the ports on which a container listens for connections.
+
+    ENV to update the PATH environment variable for the software your container installs. 
+	Note: 
+
+    VOLUME instruction should be used to expose any database storage area, configuration storage, or files/folders created by your docker container. 
+
+3. 
+LABEL : add labels to your image to help organize images by project, record licensing information, to aid in automation, or for other reasons.
+
+# Set multiple labels at once, using line-continuation characters to break long lines
+LABEL vendor=ACME\ Incorporated \
+      com.example.is-beta= \
+      com.example.is-production="" \
+      com.example.version="0.0.1-beta" \
+      com.example.release-date="2015-02-12"
+
+
+DOCKER COMPOSE
+-------------------------------
+
+docker-compose up -d 
+
+ 
+MULTICONTAINER WEBAPP
+--------------------------------
+
+https://docs.microsoft.com/en-us/azure/app-service/containers/tutorial-multi-container-app
+
+
+
+
+

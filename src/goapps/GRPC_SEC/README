@@ -1,0 +1,52 @@
+
+########################## BASIC GRPC CLIENT SERVER WITH NO SECURITY. ##########################
+
+The api package imported both in client and server are defined from proto files. This package has
+both service and message defined. 
+
+Server 
+-------------
+
+    ->> the main function starts by creating a TCP listener on the port you want to bind your gRPC server to;
+    -->> Create an instance of your Server, 
+    --->>> create an instance of a gRPC server, 
+    ---->>>> register the service, 
+    ----->>>> start the gRPC server.
+
+
+Client
+-------------
+    -> the main function instantiates a client connection, on the TCP port the server is bound to;
+    -->> note the defer call to properly close the connection when the function returns;
+    --->>> the c variable is a client for the the Ping service, that calls the SayHello function, passing a PingMessage to it.
+
+
+########################## BASIC GRPC CLIENT SERVER WITH SECURITY. ##########################
+
+
+Generate the TLS/SSL certificate 
+----------------------------------------
+
+$ openssl genrsa -out cert/server.key 2048
+$ openssl req -new -x509 -sha256 -key cert/server.key -out cert/server.crt -days 3650
+$ openssl req -new -sha256 -key cert/server.key -out cert/server.csr
+$ openssl x509 -req -sha256 -in cert/server.csr -signkey cert/server.key -out cert/server.crt -days 3650
+
+
+Generate the certificate using the procedures above. 
+
+    -> you created a credentials object (called creds) from your certificate and key files;
+    -->> you created a grpc.ServerOption array and placed your credentials object in it;
+    --->>> when creating the grpc server, you provided the constructor with you array of grpc.ServerOption;
+    ---->>>>you must have noticed that you need to precisely specify the IP you bind your server to, so that the IP matches the FQDN used in the certificate.
+
+Have the exactly same certificate file in client side. 
+
+    -> you created a credentials object with the certificate file. Note that the client do not use the certificate key, the key is private to the server;
+    -->> you added an option to the grpc.Dial() function, using your credentials object. Note that the grpc.Dial() function is also a variadic function, so it accepts any number of options;
+    --->>> same server note applies for the client: you need to use the same FQDN to connect to the server as the one used in the certificate, or the transport authentication handshake will fail.
+
+Both sides use credentials, so they should be able to talk just as before, but in an encrypted way. 
+
+
+

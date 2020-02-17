@@ -1,0 +1,96 @@
+
+####################  GO EXCEPTION ###############################
+
+Go doesn't have the exception. two ways it handle error. 
+1. multiple return value
+2. Panic 
+
+An error value will be on the right and a result value will be on the left.
+
+Whereever the methods returns the errors with return value, we should able to check the error and 
+take the correct action. 
+
+_, err := flags.Parse(&opts)
+if err != Nil {
+	os.Exit(1)
+}
+
+we can use fatalf or log.error, etc. There are many packages that support Go error methods.   
+
+
+The error is a type. It is an interface declared in the builtin package.
+
+type error interface {
+   Error() string
+}
+
+Error handling pattern in that there is no enforcement from a compiler. We have to handle our
+own error and have to define the way to handle. 
+
+Define our own error interfaces. 
+
+In Go, you can omit one or more variable assignments by putting an underscore on the position of the variable you want to omit on the left-hand-side. The underscore in this context is called blank identifier.
+
+In Go Unfortunately, the standard errors does not come with stack traces. 
+
+If you want to print stack traces instead of a plain error message, you have to use %+v instead of %v in the format pattern, and the stack traces will look similar as below.
+
+Output would be 
+
+Error: NullPointerException
+main.A
+ /Users/hussachai/Go/src/awesomeProject/error_handling.go:9
+main.B
+ /Users/hussachai/Go/src/awesomeProject/error_handling.go:13
+main.main
+ /Users/hussachai/Go/src/awesomeProject/error_handling.go:17
+runtime.main
+ /usr/local/opt/go/libexec/src/runtime/proc.go:198
+runtime.goexit
+ /usr/local/opt/go/libexec/src/runtime/asm_amd64.s:2361
+
+
+Defer is a language mechanism that puts your function call into a stack. The deferred functions will be executed in reverse order when the host function finishes regardless of whether a panic is called or not. The defer mechanism is very useful for cleaning up resources.
+
+resp, _ := http.Get("http://golang.org")
+defer func () {
+   if resp != nil {
+      resp.Body.Close()
+   }
+}()
+body, _ := ioutil.ReadAll(resp.Body)
+
+
+Panic is a built-in function that stops the normal execution flow. The deferred functions are still run as usual. When you call panic and you don’t handle it, the execution flow stops, all deferred functions are executed in reverse order, and stack traces are printed at the end.
+
+func panic(v interface{}) 
+
+Recover is a built-in function that returns the value passing from a panic call. This function must be called in a deferred function. Otherwise, it always returns nil.
+
+func A() {
+   defer fmt.Println("A")
+   defer func() {
+      if r := recover(); r != nil {
+         fmt.Printf("Panic: %+v\n", r)
+      }
+   }()
+   B()
+}
+
+Sometimes, you don’t want to stop the whole execution flow due to a panic, but you want to report an error back to a caller as a returned value. In this case, you have to recover a panicking goroutine and grab an error struct obtaining from the recover function, and then pass it to a variable. 
+
+defer func() {
+      if r := recover(); r != nil {
+         err = r.(error)
+      }
+   }()
+   GoesWrong()
+   return
+}
+func GoesWrong() {
+   panic(errors.New("Fail"))
+}
+
+
+ 
+ 

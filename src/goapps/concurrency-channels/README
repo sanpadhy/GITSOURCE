@@ -1,0 +1,17 @@
+
+############### CHANNELS WITH GOROUTINES #############################
+
+
+one goroutine sends a value to this channel, that goroutine will subsequently block until the value is received from the channel. 
+
+If I have a multiple goroutines using the same channel 
+
+c <- value has blocked in our second goroutine and subsequently the main() function concludes it’s execution before our second goroutine gets a chance to complete its own execution.
+
+In this scenario when you need more value to be collected you need buffered channel. 
+
+bufferedChannel := make(chan int, 3)
+
+
+
+

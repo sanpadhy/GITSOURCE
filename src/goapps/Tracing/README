@@ -1,0 +1,23 @@
+
+
+######################## DISTRIBUTED TRACING ##################################
+
+generate a unique ID at the beginning of each request, and carry it along the whole calling chain. The ID is called Correlation ID¹ and you can use it to trace the performance of the entire request.
+
+There are two problems need to be solved. First, how to make the ID available to every function you need to trace inside your application; second, how to pass the ID across the network when you need to call another Microservice.
+
+OpenTracing solves these problems by creating commong trace libraries. 
+
+“Zipkin” as the tracing library and “OpenTracing” as the generic tracing API.
+
+    Recorder: which will record the trace data
+    Reporter (or collecting agent): which collects the data from a recorder and sends the data to UI app
+    Tracer: which generates the trace data
+    UI: which is responsible for presenting trace data in a graphic UI
+
+Two type of tracing. 
+
+in-process tracing and the other is cross-process tracing.
+
+https://medium.com/swlh/distributed-tracing-for-go-microservice-with-opentracing-1fc1aec76b3e
+

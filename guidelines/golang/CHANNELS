@@ -1,0 +1,58 @@
+
+
+########################  CHANNELS  ######################################
+
+In Go we don't communicate threads with the shared buffer. We communicate by sharing the data itself. 
+
+Channel is the medium of communication between two goroutine threads. 
+
+Thread writing to multiple channels 
+----------------------------------------
+
+
+
+select() call 
+------------------------
+
+
+
+
+
+
+Multiple threads to same channels
+--------------------------------------------
+
+
+
+
+
+
+func merge(a, b <-chan int) <-chan int {
+	c := make(chan int)
+	go func() {
+		for {
+			select {
+			case v := <-a:
+				c <- v
+			case v := <-b:
+				c <- v
+			}
+		}
+	}()
+	return c
+}
+
+func main() {
+	a := asChan(1, 3, 5, 7)
+	b := asChan(2, 4, 6, 8)
+	c := merge(a, b)
+	for v := range c {
+		fmt.Println(v)
+	}
+}
+
+Two channels can be merged with "nil channel". 
+
+
+
+

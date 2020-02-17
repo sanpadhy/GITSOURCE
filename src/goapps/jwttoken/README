@@ -1,0 +1,8 @@
+JWT is the JSON web tokens. JWT is the compact URL safe token pin to 
+Transmit information between client and server in the stateless and secured way. 
+It uses the private key for secured connection. 
+
+""""""   SECURE OUT REST APIS USING JWT. """""""""""""""""""""
+
+OAuth will be used by server to authenticate the client first time. But to have communication 
+securely, need jwt. 

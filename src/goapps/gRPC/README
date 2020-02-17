@@ -1,0 +1,34 @@
+
+############################  REMOTE PROCEDURE CALL. ###################################
+
+
+A remote procedure call (RPC) is a means by which a program can call a procedure on another machine, and receive the result, as if it were executed on the original machine. 
+
+Server side setup 
+
+func register(rcvr interface{}) error
+
+Register function is used to indicate that we would like to like to export all of the properly-structured methods of the parameter rcvr. The method signature defines rcvr as a type that implements the interface{} interface. 
+
+func Listen(network, address string)(Listener, error)
+
+establishes a TCP network listener, that is bound to a specific host machine (typically the server processes’ local machine, as is our case), and a port.
+
+func accept(lis net.listener)
+
+The Accept function is passed a net.Listener object (the result of calling the above Listen function), and indicates that connections to the specified listener will be accepted and served to the default RPC server.
+
+
+Client side setup 
+-----------------------
+
+func Dial(network, address string) (*Client, error)
+
+By calling the RPC Dial function, we can establish a connection to the RPC server at the specified network address. 
+
+func (client *Client) Call(serviceMethod string, args interface{}, reply interface{}) error 
+
+
+It is used by an RPC client (the result of calling Dial) to invoke exported methods of and exported objects through RPC. 
+
+

@@ -1,0 +1,11 @@
+Client that will start by making an authorization request to the resource owner. 
+The resource owner then either grants or denies this request.
+
+With this authorization grant the client then passes this to the authorization server 
+which will grant back an access token. It is with this granted access token that our client 
+can then access a protected resource such as an API or a service.
+
+Using the goOAuth2 we will build the Autherization server. 
+
+
+

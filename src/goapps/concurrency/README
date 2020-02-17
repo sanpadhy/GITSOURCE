@@ -1,0 +1,32 @@
+
+Concurrency can be achieved by using 
+
+--> Goroutines 
+--> mutex 
+--> wait group 
+
+In The waitgroup 
+Add(1) on our WaitGroup to set the number of goroutines we want to wait for, and subsequently, we call .Done() within any goroutine to signal the end of its’ execution.
+
+:
+
+
+So of the deadlock scenarios are: 
+1. you fail to Unlock() on an error, then it is possible that your application will go into a deadlock as other goroutines will be unable to attain the lock on the mutex!
+
+Make sure you unluck the goroutine. 
+
+2. 
+when developing your applications you do not call the Lock() method twice on the same lock or else you will experience a deadlock scenario.
+
+func main() {
+	var b sync.Mutex
+	
+	b.Lock()
+	b.Lock()
+	fmt.Println("This never executes as we are in deadlock") 
+}
+
+
+
+

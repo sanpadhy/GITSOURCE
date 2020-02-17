@@ -1,0 +1,34 @@
+
+########################## BASIC GRPC CLIENT SERVER WITH NO SECURITY. ##########################
+
+The api package imported both in client and server are defined from proto files. This package has
+both service and message defined. 
+
+Server 
+-------------
+
+    ->> the main function starts by creating a TCP listener on the port you want to bind your gRPC server to;
+    -->> Create an instance of your Server, 
+    --->>> create an instance of a gRPC server, 
+    ---->>>> register the service, 
+    ----->>>> start the gRPC server.
+
+
+Client
+-------------
+    -> the main function instantiates a client connection, on the TCP port the server is bound to;
+    -->> note the defer call to properly close the connection when the function returns;
+    --->>> the c variable is a client for the the Ping service, that calls the SayHello function, passing a PingMessage to it.
+
+
+Generate the TLS/SSL certificate 
+----------------------------------------
+
+$ openssl genrsa -out cert/server.key 2048
+$ openssl req -new -x509 -sha256 -key cert/server.key -out cert/server.crt -days 3650
+$ openssl req -new -sha256 -key cert/server.key -out cert/server.csr
+$ openssl x509 -req -sha256 -in cert/server.csr -signkey cert/server.key -out cert/server.crt -days 3650
+
+
+
+

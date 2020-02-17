@@ -1,0 +1,98 @@
+
+simple Golang API server that connects to a front-end page.
+
+ Golang API server will use:
+
+ -->   MySQL as our database
+ -->   GORM as an ORM to interact with our database
+ -->   Request router using gorilla/mux
+ -->   Logrus for logging
+
+
+API Server are:
+
+    It listens to port 8000 on the localhost
+
+    It has five endpoints: healthz, createItem, getCompletedItems, getIncompleteItems, updateItem, and deleteItem
+
+    The TodoItem model consists of Id, Description, and Completed status attributes
+
+
+
+
+(base) santosh@santosh-Lenovo-ideapad-330-15IKB:~/sanpadhy/git-commit/src/goapps/todoListInGo$ sudo docker exec -it mysql mysql -uroot -proot
+[sudo] password for santosh: 
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 13
+Server version: 8.0.19 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases
+    -> 
+    -> q^C
+mysql> 
+mysql> 
+mysql> show database
+    -> ^C
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| todolist           |
++--------------------+
+5 rows in set (0.01 sec)
+
+mysql> use todolist;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> show tables;
++--------------------+
+| Tables_in_todolist |
++--------------------+
+| todo_item_models   |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql> show tables;
++--------------------+
+| Tables_in_todolist |
++--------------------+
+| todo_item_models   |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql> desc todo_item_models;
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| id          | int          | NO   | PRI | NULL    | auto_increment |
+| description | varchar(255) | YES  |     | NULL    |                |
+| completed   | tinyint(1)   | YES  |     | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+3 rows in set (0.01 sec)
+
+
+to connect the API server to the front-end page, we need to give the CORS headers to the response. CORS is a mechanism that allows restricted resources on a web page to be requested from another domain outside the domain from which the first resource was served.
+
+
+
+To connect the API server to the front end page: 
+
+Gives the CORS headers to the response. CORS is a mechanism that allows restricted resources on a web page to be requested from another domain outside the domain from which the first resource was served.
+
+
+

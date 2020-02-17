@@ -1,0 +1,5 @@
+machine github.com
+login mygituser
+password 12345678901234567890machine api.github.com
+login mygituser
+password 12345678901234567890

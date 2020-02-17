@@ -1,0 +1,15 @@
+The sync package provides a powerful pool of instances that can be re-used in order to reduce the pressure on the garbage collector.
+
+The test example to benchmark on time and memory to be taken without using syncpool or with syncpool. 
+
+name           time/op        alloc/op        allocs/op
+WithoutPool-8  3.02ms ± 1%    160kB ± 0%      1.05kB ± 1%
+WithPool-8     1.36ms ± 6%   1.05kB ± 0%        3.00 ± 0%
+
+Since the loop has 10k iterations, the benchmark that does not use the pool made 10k allocations on the heap vs only 3 for the benchmark with pool. The 3 allocations are made by the pool, but only one instance of the struct has been allocated. Using the sync.Pool is much faster and consumes less memory.
+
+But not in all cases. In a real world, while you are using the pool, your application will do a lot of new allocations of the heap because of Garbage collector as the pools are cleared every time the garbage collector runs. Any item stored in the Pool may be removed automatically at any time without notification. 
+
+This will improve with newer releases of Golang. 
+
+

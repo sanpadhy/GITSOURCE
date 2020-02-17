@@ -1,0 +1,42 @@
+policy: enabled
+template: |-
+  initContainers:
+  - name: istio-init
+    image: docker.io/istio/proxy_init:1.0.2
+    args:
+    - "-p"
+    - [[ .MeshConfig.ProxyListenPort ]]
+    - "-u"
+    - 1337
+    .....
+    imagePullPolicy: IfNotPresent
+    securityContext:
+      capabilities:
+        add:
+        - NET_ADMIN
+    restartPolicy: Always
+
+  containers:
+  - name: istio-proxy
+    image: [[ if (isset .ObjectMeta.Annotations "sidecar.istio.io/proxyImage") -]]
+    "[[ index .ObjectMeta.Annotations "sidecar.istio.io/proxyImage" ]]"
+    [[ else -]]
+    docker.io/istio/proxyv2:1.0.2
+    [[ end -]]
+    args:
+    - proxy
+    - sidecar
+    .....
+    env:
+    .....
+    - name: ISTIO_META_INTERCEPTION_MODE
+      value: [[ or (index .ObjectMeta.Annotations "sidecar.istio.io/interceptionMode") .ProxyConfig.InterceptionMode.String ]]
+    imagePullPolicy: IfNotPresent
+    securityContext:
+      readOnlyRootFilesystem: true
+      [[ if eq (or (index .ObjectMeta.Annotations "sidecar.istio.io/interceptionMode") .ProxyConfig.InterceptionMode.String) "TPROXY" -]]
+      capabilities:
+        add:
+        - NET_ADMIN
+    restartPolicy: Always
+    .....

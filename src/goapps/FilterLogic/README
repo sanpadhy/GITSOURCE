@@ -1,0 +1,14 @@
+Filtering on a slice of records. 
+
+filtering in-line, looping through your set of records and discarding whatever records don’t match your business requirements.
+
+Go libraries that provide map/reduce-esque functions. 
+
+Filter is a single filter function. Each record in a slice will be checked against the filter function and kept or discarded based on the boolean return value. 
+
+FilterBulk is a similar type, but applies to the entire slice of records, rather than an individual record.
+
+
+Each one of our filters will implement one of these two types, and then we can chain them together to create sets of filters.
+
+https://medium.com/@zach_johnson/a-simple-implementation-of-filtering-logic-in-go-f45a24413aaf

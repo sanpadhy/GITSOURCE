@@ -1,0 +1,39 @@
+
+
+CLIENT CONNECTION 
+----------------------------------
+
+
+-> You define a struct to hold the collection on fields you want to inject in your rcp calls. In our case, just a login and password, but you can imagine any fields you want;
+
+-->> The auth variable holds the values you’ll be using;
+
+--->>> You use grpc.WithPerRPCCredentials() function to create a DialOption object to the grpc.Dial() function;
+
+---->>>> Note that the grpc.WithPerRPCCredentials() function takes an interface as parameter, so your Authentication structure should comply to that interface. From the documentation, you know you should implement 2 methods on your structure: GetRequestMetadata and RequireTransportSecurity.
+
+----->>>>> So you define GetRequestMetadata function that just returns a map of your Authentication structure;
+
+------>>>>>>And finally, you define RequireTransportSecurity function, that tells your grpc client if it should inject metadata at the transport level. In our current case, it always returns true, but you could have it return the value of a configuration boolean, for instance.
+
+
+
+SERVER CONNECTION 
+-------------------------------------
+
+-> you moved all the code for the gRPC server creation in a goroutine with a dedicated function (startGRPCServer), so it does not block the main;
+
+-->> you create a new goroutine with a dedicated function (startRESTServer) where you create an HTTP/1.1 server;
+
+--->>> in startRESTServer where you create the REST gateway, you start by getting the context.Context background object (i.e. the root of the context tree). Then, you create a request multiplexer object, mux, with an option: runtime.WithIncomingHeaderMatcher. This option takes a function reference as parameter, credMatch, and is called for every HTTP header from the incoming request. The function evaluates whether or not the HTTP header should be passed to the gRPC context;
+ 
+---->>>> you defined the credMatch function to match the credentials header, allowing them to be metadata in the gRPC context. This is how you have your authentication working, because the reverse-proxy uses the HTTP headers it receives when it connects to the gRPC server;
+
+----->>>>> you also create a credentials.NewClientTLSFromFile, to be used as a grpc.DialOption, just like you did in the client side;
+
+------>>>>>> you register your api endpoint, i.e. you make the link between your multiplexer, you gRPC server, using the context and the gRPC options;
+
+------->>>>>>>and finally, you start an HTTP/1.1 server, and wait for incoming connections;
+
+-------->>>>>>>>aside to your goroutine, you use a blocking select call, so that your program does not end right away.
+

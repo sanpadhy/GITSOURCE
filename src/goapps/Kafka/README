@@ -1,0 +1,52 @@
+################  README ON KAFKA ################################
+
+Kafka is based on producer and consumer model. In Kafka cluster there is one primary broker and 
+multiple replicas broker. 
+
+Write happens to the commit log. Kafka messages abstracted to Topics and each topic divided into 
+partitions. All partitions written to queue and the partitions with same topics can be spread to 
+several queue. 
+
+Onsumer can consume specific partition from topics or all partitions. Consumer grouped togather to 
+consumer group. Each consumer subscribe to specific partitions. 
+
+1. how to produce and consume a data to Kafka. 
+2. How the topics work? 
+3. how to use Kafka’s publish (produce) and subscribe (consume) feature to create a worker.
+
+Kafka has to be run on cluster mode with zookeeper. 
+
+Docker image for Kafka: 
+https://github.com/confluentinc/cp-docker-images
+
+To connect to go: 
+segmentio/kafka-go
+
+To serve and handle the request from HTTP, I will use gin-gonic/gin as a router. 
+
+To create Topic 
+/opt/kafka/bin/kafka-topics.sh --create --zookeeper zoo1:2181,zoo2:2181 --topic qmessage --partitions 4 --replication-factor 2
+
+
+MY_IP=your-ip docker-compose up. You can find your IP using ifconfig -a in your terminal.
+
+To run the Topic: 
+docker run --net=host --rm confluentinc/cp-kafka:5.0.0 kafka-topics --create --topic foo --partitions 4 --replication-factor 2 --if-not-exists --zookeeper localhost:32181
+
+
+Sequence: 
+1. Publishing message into Kafka.  which accept the request, validate it and then save the data into Kafka. 
+
+2. Retrieve data from Kafka then process it.
+
+3. We read configuration such as Kafka brokers URL, topic that this worker should listen to, consumer group ID and client ID from environment variable or program argument.
+
+4. Then we make the connection to Kafka to subscribe particular topic in line 42–52. In line 52, you may notice that there is reader.Close() in deferred mode. It will tells the application to close the connection to Kafka if the program exit.
+
+5. In line 55–73 we wrap the ReadMessage function in forever loop. This will make program listening to incoming message.
+
+6. In line 63, we check the compression codec of incoming message. Since it publisher we use Snappy compression, we must decode it using Snappy too.
+
+7. Line 72 is the final stage where we can really read the message content. Starting from this point, you can now process the data. For example, marshaling it into Go struct, write to persistent database, sent data to Elasticsearch to indexing or anything. 
+
+
