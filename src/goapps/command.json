@@ -1,0 +1,24 @@
+[
+	{
+		"cmdid": "1",
+		"cmd": "cat /tmp/test.txt",
+		"cmd_depends": [ "3", "4" ]
+	},
+	{
+		"cmdid": "2",
+		"cmd": "pwd",
+		"cmd_depends": []
+	},
+	{
+		"cmdid": "3",
+		"cmd": "ls /tmp",
+		"cmd_depends": ["5"]
+	},
+	{
+		"cmdid": "4",
+		"cmd": "touch /tmp/test.txt",
+		"cmd_depends": []
+	}
+]
+
+
