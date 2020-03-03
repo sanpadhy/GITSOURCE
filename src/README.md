@@ -2,88 +2,104 @@ STRING
 -----------
 
 Problem 7
-Given the mapping a = 1, b = 2, ... z = 26, and an encoded message, count the number of ways it can be decoded.
+       
+    Given the mapping a = 1, b = 2, ... z = 26, and an encoded message, count the number of ways it can be decoded.
 
-For example, the message '111' would give 3, since it could be decoded as 'aaa', 'ka', and 'ak'.
+    For example, the message '111' would give 3, since it could be decoded as 'aaa', 'ka', and 'ak'.
 
-You can assume that the messages are decodable. For example, '001' is not allowed.
+    You can assume that the messages are decodable. For example, '001' is not allowed.
 
 
 Problem 13 
-Given an integer k and a string s, find the length of the longest substring that contains at most k distinct characters.
 
-For example, given s = "abcba" and k = 2, the longest substring with k distinct characters is "bcb".
+    Given an integer k and a string s, find the length of the longest substring that contains at most k distinct characters.
 
-
+    For example, given s = "abcba" and k = 2, the longest substring with k distinct characters is "bcb".
 
 Problem 29
 
-Run-length encoding is a fast and simple method of encoding strings. The basic idea is to represent repeated successive characters as a single count and character. For example, the string "AAAABBBCCDAA" would be encoded as "4A3B2C1D2A".
+    Run-length encoding is a fast and simple method of encoding strings. The basic idea is to represent repeated successive    
+    characters as a single count and character. For example, the string "AAAABBBCCDAA" would be encoded as "4A3B2C1D2A".
 
-Implement run-length encoding and decoding. You can assume the string to be encoded have no digits and consists solely of alphabetic characters. You can assume the string to be decoded is valid.
+    Implement run-length encoding and decoding. You can assume the string to be encoded have no digits and consists solely    
+    of alphabetic characters. You can assume the string to be decoded is valid.
 
 
 Problem 103
 
-Given a string and a set of characters, return the shortest substring containing all the characters in the set.
+    Given a string and a set of characters, return the shortest substring containing all the characters in the set.
 
-For example, given the string "figehaeci" and the set of characters {a, e, i}, you should return "aeci".
+    For example, given the string "figehaeci" and the set of characters {a, e, i}, you should return "aeci".
 
-If there is no substring containing all the characters in the set, return null.
+    If there is no substring containing all the characters in the set, return null.
+    
+    TIPS : Build a current_queue, index_queue and current_see from the given string. 
+    
+    ['i', 'e', 'a', 'e']
+    [1, 3, 5, 6]
+    {'e', 'i', 'a'}
+    ['i', 'e', 'a', 'e']
+    [1, 3, 5, 6]
+
 
 Problem 276 (TO DO)
 
-Implement an efficient string matching algorithm.
+    Implement an efficient string matching algorithm.
 
-That is, given a string of length N and a pattern of length k, write a program that searches for the pattern in the string with less than O(N * k) worst-case time complexity.
+    That is, given a string of length N and a pattern of length k, write a program that searches for the pattern in the    
+    string with less than O(N * k) worst-case time complexity.
 
-If the pattern is found, return the start index of its location. If not, return False.
+    If the pattern is found, return the start index of its location. If not, return False.
+
+    Tips: Create a set of strings with length of pattern. Check the given pattern present that that list. 
+
 
 Problem 253
-Given a string and a number of lines k, print the string in zigzag form. In zigzag, characters are printed out diagonally from top left to bottom right until reaching the kth line, then back up to top right, and so on.
+     
+     Given a string and a number of lines k, print the string in zigzag form. In zigzag, characters are printed out 
+     diagonally from top left to bottom right until reaching the kth line, then back up to top right, and so on.
 
-For example, given the sentence "thisisazigzag" and k = 4, you should print:
+     For example, given the sentence "thisisazigzag" and k = 4, you should print:
 
-t     a     g
- h   s z   a
-  i i   i z
-   s     g
-
+     t     a     g
+      h   s z   a
+       i i   i z
+        s     g
 
 Problem 153
 
-Find an efficient algorithm to find the smallest distance (measured in number of words) between any two given words in a string.
+    Find an efficient algorithm to find the smallest distance (measured in number of words) between any two given words in a 
+    string.
 
-For example, given words "hello", and "world" and a text content of "dog cat hello cat dog dog hello cat world", return 1 because there's only one word "cat" in between the two words.
-
-
-
+    For example, given words "hello", and "world" and a text content of "dog cat hello cat dog dog hello cat world", return 
+    1 because there's only one word "cat" in between the two words.
 
 
 BITWISE OPERATOR 
 ------------------------------------
 
 Problem 40
-Given an array of integers where every integer occurs three times except for one integer, which only occurs once, find and return the non-duplicated integer.
 
-For example, given [6, 1, 3, 3, 3, 6, 6], return 1. Given [13, 19, 13, 13], return 19.
+    Given an array of integers where every integer occurs three times except for one integer, which only occurs once, find    
+    and return the non-duplicated integer.
+
+    For example, given [6, 1, 3, 3, 3, 6, 6], return 1. Given [13, 19, 13, 13], return 19.
 
 
 Problem 109
-Given an unsigned 8-bit integer, swap its even and odd bits. The 1st and 2nd bit should be swapped, the 3rd and 4th bit should be swapped, and so on.
 
-For example, 10101010 should be 01010101. 11100010 should be 11010001.
+    Given an unsigned 8-bit integer, swap its even and odd bits. The 1st and 2nd bit should be swapped, the 3rd and 4th bit     
+    should be swapped, and so on.
 
-Bonus: Can you do this in one line?
+    For example, 10101010 should be 01010101. 11100010 should be 11010001.
 
+    Bonus: Can you do this in one line?
 
-
-P
-roblem 103
 Problem 137
-Implement a bit array.
+    
+    Implement a bit array. (TODO)
 
-A bit array is a space efficient array that holds a value of 1 or 0 at each index.
+    A bit array is a space efficient array that holds a value of 1 or 0 at each index.
 
     init(size): initialize the array with size
     set(i, val): updates index at i with val where val is either 1 or 0.
@@ -92,51 +108,34 @@ A bit array is a space efficient array that holds a value of 1 or 0 at each inde
 
 Problem 161
 
-Given a 32-bit integer, return the number with its bits reversed.
+    Given a 32-bit integer, return the number with its bits reversed.
 
-For example, given the binary number 1111 0000 1111 0000 1111 0000 1111 0000, return 0000 1111 0000 1111 0000 1111 0000 1111.
-
+    For example, given the binary number 1111 0000 1111 0000 1111 0000 1111 0000, return 0000 1111 0000 1111 0000 1111 0000 
+    1111.
 
 Problem 310 
 
-Write an algorithm that finds the total number of set bits in all integers between 1 and N.
-
+    Write an algorithm that finds the total number of set bits in all integers between 1 and N.
 
 Problem 217
 
-We say a number is sparse if there are no adjacent ones in its binary representation. For example, 21 (10101) is sparse, but 22 (10110) is not. For a given input N, find the smallest sparse number greater than or equal to N.
+    We say a number is sparse if there are no adjacent ones in its binary representation. For example, 21 (10101) is sparse, 
+    but 22 (10110) is not. For a given input N, find the smallest sparse number greater than or equal to N.
 
-Do this in faster than O(N log N) time.
+    Do this in faster than O(N log N) time.
 
+Problem 268
 
-Problem 
-
-Given a 32-bit positive integer N, determine whether it is a power of four in faster than O(log N) time.
-
+    Given a 32-bit positive integer N, determine whether it is a power of four in faster than O(log N) time.
 
 Problem 248
-Find the maximum of two numbers without using any if-else statements, branching, or direct comparisons.
-
-
-Problem 161: 
-Given a 32-bit integer, return the number with its bits reversed.
-
-For example, given the binary number 1111 0000 1111 0000 1111 0000 1111 0000, return 0000 1111 0000 1111 0000 1111 0000 1111.
+     
+     Find the maximum of two numbers without using any if-else statements, branching, or direct comparisons.
 
 Problem 338
 
-Given an integer n, find the next biggest integer with the same number of 1-bits on. For example, given the number 6 (0110 in binary), return 9 (1001).
-
-
-
-
-
-
-
-
-
-
-
+    Given an integer n, find the next biggest integer with the same number of 1-bits on. For example, given the number 6 
+    (0110 in binary), return 9 (1001).
 
 
 MATHMATICS 
@@ -166,6 +165,7 @@ Given an array of numbers and a number k, determine if there are three entries i
 specified number k. For example, given [20, 303, 3, 4, 25] and k = 49, return true as 20 + 4 + 25 = 49.
 
 Sort and take one number which might be part of 3 series and check for pair whise sum is equals of sum - current. 
+
 
 JUMP PROBLEMS
 -------------------
