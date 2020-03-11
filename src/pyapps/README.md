@@ -383,4 +383,68 @@ COPY
 A shallow copy has faster program execution whereas deep coy makes it slow.
 
 
+Take the count of char in string
+-----------------
+1.
 
+    charCount = {}
+    for c in str: 
+        if c in charCount: 
+            charCount[c] += 1
+        else: 
+            charCount[c] = 1
+   
+2. 
+       
+        To get the key with maximum count 
+        res = max(res, key = res.get)   
+     
+        str(res)       << will get the key with maximum count
+3.
+
+    I have a list of characters: 
+    test_list = [('g', 4), ('f', 3), ('g', 2)] 
+    expected output: ggggfffgg
+    
+    for ch, fr in enumerate(test_list): 
+        ch --> 'g' and fr --> 4 
+        ch * fr --> gggg 
+    
+    Way 2: 
+        res = ''.join(char * freq for char, freq in test_list) 
+        
+ 4. 
+ 
+        test_list = [1, 4, 6, 7] 
+        test_tup = (1, 3) 
+        
+        Output:
+        [(1, 1), (1, 4), (1, 6), (1, 7), (3, 1), (3, 4), (3, 6), (3, 7)] 
+        
+        res = [(a, b) for a in test_tup for b in test_list]
+        
+        Or you can use itertools
+        
+        from itertools import product
+        # Construct Cartesian Product Tuple list 
+
+        # using itertools.product() 
+        res = list(product(test_tup, test_list)) 
+        
+ 5. 
+        sort tuple list 
+        
+        test_list = [(4, 5, 1), (6, 1, 5), (7, 4, 2), (6, 2, 4)] 
+        test_list.sort(key = lambda x: x[N]) 
+        
+        [(6, 1, 5), (6, 2, 4), (7, 4, 2), (4, 5, 1)]
+        
+        or can use 
+        from operator import itemgetter 
+        # index according to which sort to perform 
+        N = 1
+        # Sort tuple list by Nth element of tuple 
+        # using sort() + itemgetter() 
+        test_list.sort(key = itemgetter(N)) 
+        
+  
