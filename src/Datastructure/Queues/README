@@ -1,0 +1,14 @@
+add ( i tern): Add an item to the end of the list.
+remove (): Remove the first item in the list.
+peek ( ) : Return the top of the queue.
+is Empty(): Return true if and only if the queue is empty.
+
+Queues can be implemented in arrays and linkedlist and both are same as long as inserted at back and 
+remove from front. 
+
+One place where queues are often used is in breadth-first search or in implementing a cache.
+In breadth-first search, for example, we used a queue to store a list of the nodes that we need to process.
+Each time we process a node, we add its adjacent nodes to the back of the queue. This allows us to process
+nodes in the order in which they are viewed.
+
+

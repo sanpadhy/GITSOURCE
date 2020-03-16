@@ -1,0 +1,33 @@
+
+Type of Trees: 
+
+1) Trees 
+2) Binary Tree 
+3) Binary Search Tree 
+4) Balanced Tree 
+5) Unbalanced Tree 
+6) Complete Binary Tree 
+A complete binary tree is a binary tree in which every level of the tree is fully filled, except for perhaps the
+last level. To the extent that the last level is filled, it is filled left to right.
+A min-heap is a complete binary tree
+7) Full Binary Tree 
+A full binary tree is a binary tree in which every node has either zero or two children. That is, no nodes have
+only one child.
+8) Perfect Binary Trees
+A perfect binary tree is one that is both full and complete. All leaf nodes will be at the same level, and this
+level has the maximum number of nodes.
+
+ 
+
+
+
+
+A binary tree is a tree in which each node has up to two children. Not all trees are binary trees. For example,
+this tree is not a binary tree. You could call it a ternary tree.
+
+When given a tree question, many candidates assume the interviewer means a binary search tree. Be sure
+to ask. A binary search tree imposes the condition that, for each node, its left descendents are less than or
+equal to the current node, which is less than the right descendents.
+
+
+

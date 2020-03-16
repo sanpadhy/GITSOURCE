@@ -1,0 +1,196 @@
+
+To check whether have just one bit is set
+
+	(bitVector & (bitVector - 1)) == 0;
+
+	00010000 - 1 = 00001111
+	00010000 & 00001111 = 0
+
+1)
+Insertion: You are given two 32-bit numbers, N and M, and two bit positions, i and
+j. Write a method to insert M into N such that M starts at bit j and ends at bit i. You
+can assume that the bits j through i have enough space to fit all of M. That is, if
+M = 10011, you can assume that there are at least 5 bits between j and i. You would not, for
+example, have j = 3 and i = 2, because M could not fully fit between bit 3 and bit 2.
+EXAMPLE
+Input:
+N
+10000000000, M = 10011, i = 2, j = 6
+Output: N = 10001001100
+
+2) 
+Binary to String: Given a real number between O and 1 (e.g., 0.72) that is passed in as a double, print
+the binary representation. If the number cannot be represented accurately in binary with at most 32
+characters, print "ERROR:'
+
+String printBinary(double num) {
+	if (num >= 1 I I num <= 0) {
+		return "ERROR";
+	}
+	StringBuilder binary = new StringBuilder();
+	binary.append(".");
+	while (num > 0) {
+		/* Setting a limit on length: 32 characters */
+		if (binary.length() >= 32) {
+			return "ERROR";
+		}
+		double r = num * 2;
+		if (r >= 1) {
+			binary.append(l);
+			num = r - 1;
+		} else {
+			binary.append(0);
+			num = r;
+		}
+	}
+	return binary.toString();
+}
+
+String printBinary2(double num) {
+	if (num >= 1 II num <= 0) {
+		return "ERROR";
+	}
+
+	StringBuilder binary = new StringBuilder();
+
+	double frac = 0.5;
+	binary.append(".");
+
+	while (num > 0) {
+		/* Setting a limit on length: 32 characters */
+
+		if (binary.length() > 32) {
+			return "ERROR";
+		}
+		if (num >= frac) {
+			binary.append(l);
+			num -= frac;
+		} else {
+			binary.append(0);
+		}
+		frac /= 2;
+	}
+	return binary.toString();
+}
+
+
+3) 
+Flip Bit to Win: You have an integer and you can flip exactly one bit from a 0 to a 1. Write code to
+find the length of the longest sequence of ls you could create.
+
+EXAMPLE
+	Input: 1775 (or: 11011101111)
+	Output: 8
+
+Solution 1: 
+One approach is to convert an integer into an array that reflects the lengths of the Os and 1 s sequences. For
+example, 11011101111 would be (reading from right to left) [0 0, 4 1, 1 0, 3 1, 1 0, 2 1, 21 0]. The
+subscript reflects whether the integer corresponds to a Os sequence or a 1 s sequence
+
+int longestSequence(int n) {
+	if (n == -1) return Integer.BYTES* 8;
+	Arraylist<Integer> sequences = getAlternatingSequences(n);
+	return findLongestSequence(sequences);
+}
+
+/* Return a list of the sizes of the sequences. The sequence starts off with the
+number of 0s (which might be 0) and then alternates with the counts of each
+value.*/
+Arraylist<Integer> getAlternatingSequences(int n) {
+	ArrayList<Integer> sequences = new Arraylist<Integer>();
+	int searchingFor 0;
+	int counter = 0;
+
+	for (int i = 0; i <Integer.BYTES* 8; i++) {
+		if ((n & 1) != searchingFor) {
+			sequences. add(counter);
+			searchingFor = n & 1; // Flip 1 to 0 or 0 to 1
+			counter = 0;
+		}
+		counter++;
+		n >>>= 1;
+	}
+	sequences.add(counter);
+	return sequences;
+}
+
+/* Given the lengths of alternating sequences of 0s and ls, find the longest one
+* we can build. */
+int findlongestSequence(ArrayList<Integer> seq) {
+	int maxSeq 1;
+	for (int i 0; i < seq.size(); i += 2) {
+		int zerosSeq = seq.get(i);
+		int onesSeqRight = i - 1 >= 0? seq.get(i - 1) : 0;
+		int onesSeqLeft = i + 1 < seq.size() ? seq.get(i + 1): 0;
+		int thisSeq = 0;
+		if (zerosSeq == 1) {//Can merge
+			thisSeq = onesSeqLeft + 1 + onesSeqRight;
+		} if (zerosSeq > 1) {//Just add a zero to either side
+		thisSeq = 1 + Math.max(onesSeqRight, onesSeqLeft);
+		} else if (zerosSeq == 0) {//No zero, but take either side
+			thisSeq = Math.max(onesSeqRight, onesSeqLeft);
+		}
+		maxSeq = Math.max(thisSeq, maxSeq);
+	}
+	return maxSeq;
+}
+
+Time complexity: O(number of bits).
+
+4)
+Next Number: Given a positive integer, print the next smallest and the next largest number that
+have the same number of 1 bits in their binary representation.
+
+5)
+Debugger: Explain what the following code does: ( ( n & ( n-1)) == 0).
+
+6)
+Conversion: Write a function to determine the number of bits you would need to flip to convert
+integer A to integer B.
+
+EXAMPLE
+	Input: 29 (or: 11101), 15 (or: 01111)
+	Output: 2
+
+Each 1 in the XOR represents a bit that is different between A and B. Therefore, to check the number of bits
+that are different between A and B, we simply need to count the number of bits in A A B that are 1.
+
+int bitSwapRequired(int a, int b) {
+	int count = 0;
+	for (int c = a Ab; c != 0; c = c >> 1) {
+		count+= c & 1;
+	}
+	return count;
+}
+
+This code is good, but we can make it a bit better. Rather than simply shifting c repeatedly while checking
+the least significant bit, we can continuously flip the least significant bit and count how long it takes c to
+reach 0. The operation c = c & ( c - 1) will clear the least significant bit in c . The code below utilizes this approach.
+
+int bitSwapRequired(int a, int b) {
+	int count = 0;
+	for (int c = a Ab; c != 0; c = c & (c-1)) {
+		count++;
+	}
+	return count;
+}
+
+
+7) 
+Pairwise Swap: Write a program to swap odd and even bits in an integer with as few instructions as
+possible (e.g., bit 0 and bit 1 are swapped, bit 2 and bit 3 are swapped, and so on).
+
+int swapOddEvenBits(int x) {
+	return ( ((x & 0xaaaaaaaa) >>> 1) I ((x & 0x55555555) << 1) );
+}
+
+8) 
+Draw Line: A monochrome screen is stored as a single array of bytes, allowing eight consecutive
+pixels to be stored in one byte. The screen has width w, where w is divisible by 8 (that is, no byte will
+be split across rows). The height of the screen, of course, can be derived from the length of the array
+and the width. Implement a function that draws a horizontal line from ( xl, y) to ( x2, y).
+The method signature should look something like:
+drawline(byte[] screen, int width, int xl, int x2, int y)
+
+9) 
+

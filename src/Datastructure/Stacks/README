@@ -1,0 +1,135 @@
+
+1) 
+
+Describe how you could use a single array to implement three stacks.
+
+2) 
+How would you design a stack which, in addition to push and pop, has a function min
+which returns the minimum element? Push, pop and min should all operate in 0(1) time.
+
+Keep track of the minimum at each state, we would be able to easily know the minimum. We can do
+this by having each node record what the minimum beneath itself is. Then, to find the min, you just look at
+what the top element thinks is the min.
+
+public class StackWithMin extends Stack<NodeWithMin> {
+	public void push(int value) {
+		int newMin = Math.min(value, min());
+		super.push(new NodeWithMin(value, newMin));
+	}
+	public int min() {
+		if (this.isEmpty()) {
+			return Integer.MAX_VALUE; // Error value
+		} else {
+			return peek().min;
+		}
+	}
+}
+
+class NodeWithMin {
+	public int value;
+	public int min;
+	public NodeWithMin(int v, int min){
+		value = v;
+		this.min = min;
+	}
+}
+
+public class StackWithMin2 extends Stack<Integer> {
+	Stack<Integer> s2;
+	public stackWithMin2() {
+		s2 = new Stack<Integer>();
+	}
+	public void push(int value){
+		if (value <= min()) {
+			s2.push(value);
+		}
+		super.push(value);
+	}
+
+	public Integer pop() {
+		int value = super.pop();
+		if (value == min()) {
+			s2.pop();
+		}
+		return value;
+	}
+
+	public int min() {
+		if (s2.isEmpty()) {
+			return Integer.MAX_VALUE;
+		} else {
+			return s2.peek();
+		}
+	}
+}
+
+3) 
+Stack of Plates: Imagine a (literal) stack of plates. If the stack gets too high, it might topple.
+Therefore, in real life, we would likely start a new stack when the previous stack exceeds some
+threshold. Implement a data structure SetOfStacks that mimics this. SetO-fStacks should be
+composed of several stacks and should create a new stack once the previous one exceeds capacity.
+SetOfStacks. push() and SetOfStacks. pop() should behave identically to a single stack
+(that is, pop () should return the same values as it would if there were just a single stack).
+FOLLOW UP
+Implement a function popAt ( int index) which performs a pop operation on a specific sub-stack.
+
+4) 
+Implement a MyQueue class which implements a queue using two stacks.
+
+5) 
+Write a program to sort a stack such that the smallest items are on the top. You can use
+an additional temporary stack, but you may not copy the elements into any other data structure
+(such as an array). The stack supports the following operations: push, pop, peek, and is Empty.
+
+Solution 1: 
+search through the entire stack to find
+the minimum element and then push that onto a new stack. Then, we find the new minimum element
+and push that. This will actually require a total of three stacks: s 1 is the original stack, s2 is the final sorted
+stack, and s3 acts as a buffer during our searching of sl. To search sl for each minimum, we need to pop
+elements from sl and push them onto the buffer, s3.
+
+Solution 2: 
+Sort it during the insert in Stack 2. For this we need extra stack with a temporary variable. 
+
+    stack 1       stack 2
+    		   12
+     5             8
+    10             3
+    7              1
+
+When need to insert to 5, 5 should go above 3. pop() 5 out of stack1 and store it in temporary variable. 
+pop() 12 and 8 out of stack 2 and push to stack 1. Push 5 into stack 2 and the again pop() and push() 
+12 and 8 back to stack2. 
+
+void sort(Stack<Integer> s) {
+	Stack<Integer> r = new Stack<Integer>();
+	while(!s.isEmpty()) {
+	/* Insert each element in s in sorted order into r. */
+		int tmp = s.pop();
+		while(!r.isEmpty() && r.peek() > tmp) {
+			s.push(r.pop());
+		}
+		r.push(tmp);
+	}
+
+	/* Copy the elements from r back into s. */
+	while (!r.isEmpty()) {
+		s.push(r.pop());  
+	}
+}
+
+O(N2) time and O(N) space. 
+
+If we are allowed to have unlimited stack then we can do merge sort or quick sort. 
+
+ 
+6) 
+Animal Shelter: An animal shelter, which holds only dogs and cats, operates on a strictly"first in, first
+out" basis. People must adopt either the "oldest" (based on arrival time) of all animals at the shelter,
+or they can select whether they would prefer a dog or a cat (and will receive the oldest animal of
+that type). They cannot select which specific animal they would like. Create the data structures to
+maintain this system and implement operations such as enqueue, dequeueAny, dequeueDog,
+and dequeueCat. You may use the built-in Linked list data structure.
+
+
+

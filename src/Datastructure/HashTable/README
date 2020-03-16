@@ -1,0 +1,25 @@
+/*
+A hash table is a data structure that maps keys to values for highly efficient lookup.
+
+1) 
+compute the key's hash code, which will usually be an int or long.
+
+2) 
+map the hash code to an index in the array.
+hash (key)% array_length
+
+3)
+Store the key and value in this index.
+
+To retrieve the value pair by its key, you repeat this process.
+
+good implementation that keeps collisions to a minimum, in which case
+the lookup time is 0( 1).
+
+Alternatively, we can implement the hash table with a balanced binary search tree. This gives us an O( log N)
+lookup time.
+
+
+
+
+*/ 

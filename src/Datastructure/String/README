@@ -1,0 +1,396 @@
+
+
+
+1. 
+strip the leading 0 using lstrip
+
+test_list = ['012', '03', '044', '09'] 
+
+Expected Output : ['12', '3', '44', '9']
+
+res = [ele.lstrip('0') for ele in test_list] 
+
+##################
+
+Regular Expression 
+-------------------
+
+
+^a...s$ --> any five letter string starting with a and ending with s.
+
+re.match()   <-- search the pattern 
+
+[abc] --> match contains any of the a, b or c.
+
+[a-e] is the same as [abcde]. 
+
+[^abc] means any character except a or b or c
+
+[..] --> Matching two characters. period matches any single character. 
+
+ma*n --> zero or more occurrences of the pattern left to it.
+
+ma+n --> The plus symbol + matches one or more occurrences of the pattern left to it.
+
+Backlash \ is used to escape various characters including all metacharacters.
+
+Parentheses () is used to group sub-patterns. 
+
+ This RegEx [0-9]{2, 4} matches at least 2 digits but not more than 4 digits
+ 
+ Vertical bar | is used for alternation (or operator).
+ 
+
+Similarly there are some special sequences which can be used for pattern matching. 
+
+\Athe --> Matches if the specified characters are at the start of a string. 
+
+foo\b or \bfoo -->  Matches if the specified characters are at the beginning or end of a word. 
+
+\b - Matches if the specified characters are at the beginning or end of a word.
+
+\B - Opposite of \b. Matches if the specified characters are not at the beginning or end of a word.
+
+\d - Matches any decimal digit. Equivalent to [0-9]
+
+\D - Matches any non-decimal digit. Equivalent to [^0-9]
+
+Similarly \s & \S, \w & \W and \Z
+
+result = re.findall(pattern, string)     << find all occurances 
+
+result = re.split(pattern, string)       << splits the string where there is a match and returns a list of strings where the splits have occurred.
+
+re.sub(pattern, replace, string)
+
+The method returns a string where matched occurrences are replaced with the content of replace variable.
+
+re.subn() 
+
+Similarly you have many options that can be tried. 
+
+The re attribute of a matched object returns a regular expression object. Similarly, string attribute returns the passed string.
+
+>>> match.re
+re.compile('(\\d{3}) (\\d{2})')
+
+>>> match.string
+'39801 356, 2102 1111'
+
+
+>>> stringVar.strip() 
+This is one of the string methods which removes leading/traili ng white space.
+
+##################
+
+2. Anagram or permutation of characters in string 
+
+Solution1: 
+  Sort and compare. Easy to understand, no extra data structure required. But Not optimal as having higher time complexity. 
+
+boolean permutation(String s, String t) {
+	if (s.length() != t.length()) {
+		return false;
+	}
+	return sort(s).equals(sort(t));
+}
+
+Solution2: 
+
+boolean permutation(String s, String t) {
+	if (s.length() != t.length()) {
+		return false;
+	}
+
+	int[] letters = new int[128];
+	char[] s_array = s.toCharArray();
+	for (char c : s_array) { II count number of each char in s.
+		letters[c]++;
+	}
+	for (int i= 0; i < t.length(); i++) {
+		int c = (int) t.charAt(i);
+		letters[c]--;
+		if (letters[c] < 0) {
+			return false;
+		}
+	}
+	return true;
+
+3. 
+Remove the empty strings from list of strings 
+
+Two ways it can be removed. using remove() or using list comprehensions. 
+
+	# initializing list  
+	test_list = ["", "GeeksforGeeks", "", "is", "best", ""] 
+
+	Output: 
+	['GeeksforGeeks', 'is', 'best']
+
+	# using remove() to 
+	# perform removal 
+	while("" in test_list) : 
+    		test_list.remove("") 
+
+	# using list comprehension to 
+	# perform removal 
+	test_list = [i for i in test_list if i] 
+
+4. 
+Replace Pattern: 
+Write a method to replace all spaces in a string with '%20'. You may assume that the string
+has sufficient space at the end to hold the additional characters, and that you are given the "true"
+length of the string.
+
+Input: "Mr John Smith   ", 13 
+Output: "Mr%20John%20Smith"
+
+string manipulation problems is to edit the string starting from the end and working
+backwards. This is useful because we have an extra buffer at the end, which allows us to change characters
+without worrying about what we're overwriting.
+
+
+Solution1: 
+Two scan approach 
+
+In the first scan, we count the number of spaces. By tripling this number, we can compute how many extra characters we will
+have in the final string. In the second pass, which is done in reverse order, we actually edit the string. When
+we see a space, we replace it with %20. If there is no space, then we copy the original character.
+
+void replaceSpaces(char(J str, int trueLength) {
+	int spaceCount = 0, index, i = 0;
+
+	// First Scan
+	for (i - 0; i < trueLength; i++) {
+	if (str[i] == ' ') {
+		spaceCount++;
+	}
+
+	// Second scan 
+	index = truelength + spaceCount * 2;
+	if (truelength < str.length) str[trueLength] == '\0'; 
+	for (i = truelength - 1; i >= 0; i-- ) {
+		if (str[i] == ' ') {
+			str[index - 1] = '0';
+			str[index - 2] = '2'; 
+			str[index - 3] = '%';
+			index = index - 3;
+		} else {
+			str[index - 1] = str[i];
+			index--;
+		}
+	}
+}
+
+5. 
+Palindrom Pattern 
+
+Solution1: 
+Hash Table Approach: 
+Hash table to count how many times each character appears. Then, we iterate through the hash table and ensure that no more than one character has
+an odd count.
+
+In time complexity we can't improve further. Only the space complexity we can improve using bit vector. 
+
+Solution2: 
+using bitvector
+
+boolean isPermutationOfPalindrome(String phrase) {
+	int bitVector = createBitVector(phrase);
+	return bitVector == 0 I I checkExactlyOneBitSet(bitVector);
+}
+
+/* Create a bit vector for the string. For each letter with value i, toggle the
+* ith bit. */
+int createBitVector(String phrase) {
+	int bitVector = 0;
+
+	for (char c : phrase.toCharArray()) {
+		int x = getCharNumber(c);
+		bitVector = toggle(bitVector, x);
+	}
+	return bitVector;
+}
+
+/* Toggle the ith bit in the integer. */
+int toggle(int bitVector, int index) {
+	if (index < 0) return bitVector;
+
+	int mask= 1 << index;
+	if ((bitVector & mask) == 0) {
+		bitVector I= mask;
+	} else {
+		bitVector &= =mask;
+	}
+	return bitVector;
+}
+
+/* Check that exactly one bit is set by subtracting one from the integer and
+* ANDing it with the original integer. */
+
+boolean checkExactlyOneBitSet(int bitVector) {
+	return (bitVector & (bitVector - 1)) == 0;
+}
+
+6. 
+One Away: There are three types of edits that can be performed on strings: insert a character,
+remove a character, or replace a character. Given two strings, write a function to check if they are
+one edit (or zero edits) away.
+
+EXAMPLE
+pale, ple   -> true
+pales, pale -> true
+pale, bale  -> true
+pale, bae   -> false
+
+Solution 1: 
+Brute Force Method: 
+
+We could check all possible strings that are one edit away by
+testing the removal of each character (and comparing), testing the replacement of each character (and
+comparing), and then testing the insertion of each possible character (and comparing).
+
+
+boolean oneEditAway(String first, String second) {
+	if (first.length()== second.length()) {
+		return oneEditReplace(first, second);
+	} else if (first.length()+ 1 == second.length()) {
+		return oneEditinsert(first, second);
+	} else if (first.length() - 1 == second.length()) {
+		return oneEditinsert(second, first);
+	}
+	return false;
+}
+
+boolean oneEditReplace(String sl, String s2) {
+	boolean foundDifference = false;
+	for (int i= 0; i < sl.length(); i++) {
+		if (sl.charAt(i) = ! s2.charAt(i)) {
+			if (foundDifference) {
+				return false;
+			}
+			foundDifference = true;
+		}
+	}
+	return true;
+}
+
+/* Check if you can insert a character into sl to make s2. */
+boolean oneEditinsert(String sl, String s2) {
+	int indexl = 0;
+	int index2 = 0;
+	while (index2 < s2.length() && indexl < sl.length()) {
+		if (sl.charAt(indexl) != s2.charAt(index2)) {
+			if (indexl != index2) {
+				return false;
+			}
+			index2++;
+			} else {
+				indexl++;
+				index2++;
+			}
+		}
+		return true;
+	}
+
+7.  
+Design a method to find the frequency of occurrences of any given word in a book. What if we were running this algorithm multiple times?
+
+8. 
+Pattern Matching: You are given two strings, pattern and value. The pattern string consists of
+just the letters a and b, describing a pattern within a string. For example, the string catcatgocatgo
+matches the pattern aabab (where cat is a and go is b). It also matches patterns like a, ab, and b.
+Write a method to determine if value matches pattern.
+
+9. 
+Oh, no! You have accidentally removed all spaces, punctuation, and capitalization in a
+lengthy document. A sentence like "I reset the computer. It still didn't boot!"
+became "iresetthecomputeri tstilldidntboot''. You'll deal with the punctuation and capi­
+talization later; right now you need to re-insert the spaces. Most of the words are in a dictionary but
+a few are not. Given a dictionary (a list of strings) and the document (a string), design an algorithm
+to unconcatenate the document in a way that minimizes the number of unrecognized characters.
+
+EXAMPLE:
+
+Input:
+jesslookedjustliketimherbrother
+
+Output: jess looked just like tim her brother (7 unrecognized characters)
+
+10. 
+Implement an algorithm to determine if a string has all unique characters. What if you
+cannot use additional data structures?
+
+11. 
+Rotate Matrix: Given an image represented by an NxN matrix, where each pixel in the image is 4
+bytes, write a method to rotate the image by 90 degrees. Can you do this in place?
+
+Refer the solution in Cracking the coding Interview -- page 91
+
+12. 
+Zero Matrix: Write an algorithm such that if an element in an MxN matrix is 0, its entire row and
+column are set to 0.
+
+void setZeros(int[][] matrix) {
+	boolean[] row = new boolean[matrix .length];
+	boolean[] column = new boolean[matrix[0].length];
+
+	// Store the row and column index with value 0
+	for (int i= 0; i < matrix.length; i++) {
+		for (int j = 0; j < matrix[0].length;j++) {
+		if (matrix[i][j] == 0) {
+			row[i] = true;
+			column[j] = true;
+		}
+	}
+	// Nullify rows
+	for (inti= 0; i < row.length; i++) {
+	if (row[i]) nullifyRow(matrix, i);}
+		// Nullify columns
+		for (int j = 0; j < column.length; j++) {
+			if (column[j]) nullifyColumn(matrix, j);
+		}
+
+	void nullifyRow(int[][] matrix, int row) {
+		for (int j = 0; j < matrix[0].length; j++) {
+			matrix[row][j] = 0;
+		}
+	}
+}
+void nullifyColumn(int[][] matrix, int col) {
+	for (int i= 0; i < matrix.length; i++) {
+		matrix[i][col] = 0;
+	}
+}
+
+To make this somewhat more space efficient we could use a bit vector instead of a boolean array. It would
+still be O(N) space.
+
+13. 
+Given two strings, 51 and 52, write code to check if 52 is a rotation of 51 using only one
+call to i5Sub5tring (e.g., "waterbottle" is a rotation of" erbottlewat").
+
+boolean isRotation(String sl, String s2) {
+	int len = sl.length();
+	/* Check that sl and s2 are equal length and not empty*/
+	if (len == s2.length() && len > 0) {
+		/* Concatenate sl and sl within new buffer */
+		String slsl = sl + sl;
+		return isSubstring(slsl, s2);
+	}
+	return false
+}
+
+Assume that isSubstring runs in O(A+B) time (on strings of length A and B), then the runtime of is Rotation isO(N).
+
+14.
+Define a function whose input will be in the form of
+
+"zero one, two three four five six seven ......"
+
+which number being part of fibonacci series , like [0, 1, 1, 2, 3, 5, 8, ...]
+
+will be reversed and other number should be keep the same. So the expected output is
+
+"orez eno, 0wt eerht four evif six seven ..."
+

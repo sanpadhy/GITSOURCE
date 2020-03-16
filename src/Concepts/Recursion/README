@@ -1,0 +1,121 @@
+a problem is recursive is that it can be built off of subproblems. 
+
+When you hear a problem beginning with the following statements, it's often (though not always) a good
+candidate for recursiC!n: "Design an algorithm to compute the nth .. :; "Write code to list the first n .. :; "Imple­
+ment a method to compute all..:; and so on.
+
+Recursive algorithms can be very space inefficient. Each recursive call adds a new layer to the stack, which
+means that if your algorithm recurses to a depth of n, it uses at least O ( n) memory.
+
+For this reason, it's often better to implement a recursive algorithm iteratively.
+
+Dynamic programming is mostly just a matter of taking a recursive algorithm and finding the overlapping
+subproblems (that is, the repeated calls). You then cache those results for future recursive calls.
+
+Two types of Dynamic Programming 
+
+1. Top down Dynamic Programming or memoization.  
+2. Buttom up dynamic Programming 
+
+P1) 
+Triple Step: A child is running up a staircase with n steps and can hop either 1 step, 2 steps, or 3
+steps at a time. Implement a method to count how many possible ways the child can run up the
+stairs.
+
+P2) 
+Robot in a Grid: Imagine a robot sitting on the upper left corner of grid with r rows and c columns.
+The robot can only move in two directions, right and down, but certain cells are "off limits" such that
+the robot cannot step on them. Design an algorithm to find a path for the robot from the top left to
+the bottom right.
+
+If we picture this grid, the only way to move to spot ( r, c) is by moving to one of the adjacent spots:
+( r -1, c) or ( r, c -1). So, we need to find a path to either ( r-1, c) or ( r, c -1).
+
+How do we find a path to those spots? To find a path to ( r-1, c) or ( r, c -1), we need to move to one
+of its adjacent cells. So, we need to find a path to a spot adjacent to ( r-1, c), which are coordinates
+( r- 2, c) and ( r-1, c -1). or a spot adjacent to ( r, c -1). which are soots ( r- L c -1) and ( r. c -2).
+
+Arraylist<Point> getPath(boolean[][] maze) {
+	if (maze == null I I maze.length == 0) return null;
+	ArrayList<Point> path = new Arraylist<Point>();
+	if (getPath(maze, maze.length - 1, maze[0].length - 1, path)) {
+		return path;
+	}
+	return null;
+}
+
+boolean getPath(boolean[][] maze, int row, int col, Arraylist<Point> path) {
+	/* If out of bounds or not available, return.*/
+	if (col < 0 11 row < 0 11 !maze[row][col]) {
+		return false;
+	}
+
+	boolean isAtOrigin =(row == 0) && (col == 0);
+	/* If there's a path from the start to here, add my location. */
+
+	if (isAtOrigin I I getPath(maze, row, col - 1, path) ||
+		getPath(maze, row - 1, col, path)) {
+		Point p = new Point(row, col);
+		path.add(p);
+		return true;
+	}
+	return false;
+}
+
+
+P3) 
+Magic Index: A magic index in an array A [ 0 ••• n -1] is defined to be an index such that A[ i] =
+i. Given a sorted array of distinct integers, write a method to find a magic index, if one exists, in
+array A.
+FOLLOW UP
+What if the values are not distinct?
+
+P4)
+Power Set: Write a method to return all subsets of a set.
+
+
+P5) 
+Recursive Multiply: Write a recursive function to multiply two positive integers without using the
+*operator.You can use addition, subtraction, and bit shifting, but you should minimize the number
+of those operations.
+
+
+P6) 
+Write a method to compute all permutations of a string of unique characters.
+
+P7) 
+Implement an algorithm to print all valid (e.g., properly opened and closed) combinations of n pairs of parentheses.
+
+On each recursive call, we have the index for a particular character in the string. We need to select either a
+left or a right paren. When can we use a left paren, and when can we use a right paren?
+
+1. Left Paren: As long as we haven't used up all the left parentheses, we can always insert a left paren.
+
+2. Right Paren: We can insert a right paren as long as it won't lead to a syntax error. When will we get a
+syntax error? We will get a syntax error if there are more right parentheses than left.
+
+
+void addParen(Arraylist<String> list, int leftRem, int rightRem, char[] str, int index) {
+	if (leftRem < 0 I I rightRem < leftRem) return;// invalid state
+	if (leftRem == 0 && rightRem == 0) {/*Out of left and right parentheses */
+		list.add(String.copyValueOf(str));
+	} else {
+		str[index] = '('; // Add left and recurse
+		addParen(list, leftRem - 1, rightRem, str, index + 1);
+		str[index] = ')'; // Add right and recurse
+		addParen(list, leftRem, rightRem - 1, str, index + 1);
+	}
+}
+
+ArrayList<String> generateParens(int count) {
+	char[] str = new char[count *2];
+	Arraylist<String> list = new Arraylist<String>();
+	addParen(list, count, count, str, 0);
+	return list;
+}
+
+Because we insert left and right parentheses at each index in the string, and we never repeat an index, each
+string is guaranteed to be unique.
+
+P8)
+

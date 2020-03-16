@@ -1,0 +1,35 @@
+Palindrom: A string or number or list is palindrom, if we reverse we get the same value. 
+
+Is Palindrom 
+
+1->2->3->2->1
+
+abccba
+
+123321
+
+Not Palindrom 
+
+12341
+
+
+The Palindrom can be tested by Reversing the parameters and checked for equals. 
+
+1. reverse: 
+
+   1.1. By Swapping 
+  
+   1.2. By using Stack 
+
+In Python Reverse can be done in two ways 
+
+1. Array [1, 2, 3, 4, 5]    Array[::-1]
+
+2. abcba     reversed()
+
+In Golang 
+
+1. reverse(str)
+
+
+ 

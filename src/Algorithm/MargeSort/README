@@ -1,0 +1,5 @@
+Q.1
+You are given two sorted arrays, A and B, where A has a large enough buffer at the end to hold B. Write a method to merge B into A in sorted order.
+
+Q/.2 
+Imagine you have a 20 GB file with one string per line. Explain how you would sort the file.
