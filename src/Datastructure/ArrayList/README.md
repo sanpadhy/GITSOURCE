@@ -35,6 +35,53 @@ ArrayList
 	inserting N elements takes O(N) work total. Each insertion is 0(1) on average, even though
 	some insertions take O ( N) time in the worst case.
 
+Subarray 
+---------------
+        Slice of an array which is contiguous. Subarrays of {1, 2, 3}
+	{1}, {1, 2}, {1, 2, 3}, {2}, {2, 3}, .....
+	
+	for (int i = 0; i < n; i++)
+	{
+		// consider all subarrays ending at j
+		for (int j = i; j < n; j++) {
+		 	.....
+		 }
+	}
+	
+	n(n+10)/2 subarrays in an array of n. 
+
+Subsequence
+----------------
+	another sequence by deleting some element without changing the order. Like {A, B, C, D, E} has the subsequence {A, C, E}. Subarray will be contiguous, whereas subsequence will be noncontiguous. 
+	
+	// Function to print all subsequences of the specified string
+	void findPowerSet(string str)
+	{
+		int n = str.length();
+
+		// N stores total number of subsets
+		int N = pow(2, n);
+
+		// generate each subset one by one
+		for (int i = 0; i < N; i++)
+		{
+			cout << "'";
+
+			// check every bit of i
+			for (int j = 0; j < n; j++)
+			{
+				// if j'th bit of i is set, print S[j]
+				if (i & (1 << j))
+					cout << str[j];
+			}
+			cout << "', ";
+		}
+	}
+
+Subset
+------------
+	Any possible combination of original set. It can be contiguous or noncontiguous or in any order. 
+
 
 Inbuild functions: 
 ------------------------------
@@ -42,8 +89,15 @@ Inbuild functions:
 	abs() --> Absolute 
 
 	isalpha(arr[i]) -- To check the variable is alphanumeric. 
+
+
+Common Practices
+-------------------------------
+
+	1. Divide and conquer (recursive way)
 	
-	
+
+
 
 PROGRAMS
 -------------------------------
